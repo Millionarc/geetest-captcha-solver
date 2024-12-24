@@ -8,10 +8,10 @@ from io import BytesIO
 from tqdm import tqdm
 import sys
 
-
+# if runnning this ensure folders are correct, these are placeholders
 OUTPUT_DIR = 'D:/outputcaptchas'
-CUTOUT_SHAPES_DIR = './processed_images/'
-BASE_IMAGES_DIR = './ogpics/'
+CUTOUT_SHAPES_DIR = './cutout_images/'
+BASE_IMAGES_DIR = './base_images/'
 
 NUM_PROCESSES = 16 
 UPDATE_FREQUENCY = 1000 
@@ -20,9 +20,9 @@ BATCH_DIR_PREFIX = 'batch_'
 
 TARGET_HEIGHT = 200
 TARGET_WIDTH = 300
-CUTOFF_SIZE = 80
+CUTOFF_SIZE = 80 # images are 80x80, ensures that images aren't being placed off of the grid of base image
 
-SUPPORTED_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp') # maybe implement other types of images?
+SUPPORTED_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp') # future implementation of other types of images
 
 LOG_DIR = 'logs'
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -66,7 +66,7 @@ def fade_cutout_area(base_image, cutout_shape, shape_mask, slider_x, cutout_y):
         faded_area = enhancer.enhance(0.4) 
 
         base_image.paste(faded_area, area_box, mask_cropped)
-
+        
     except Exception as e:
         traceback.print_exc()
         print(f"Cannot fade ({slider_x}, {cutout_y}): {e}")
@@ -78,6 +78,7 @@ def reconstruct_image(image_bytes):
     return Image.open(BytesIO(image_bytes)).convert('RGBA')
 
 def generate_unique_filename(base_image_name, x, y, cutout_index):
+    # legacy code for debugging so I kept it in, it's just naming images can be simplified if necessary
     unique_id = uuid.uuid4().hex[:8]
     filename = f"{base_image_name}_x{x}_y{y}_cutout{cutout_index}_{unique_id}.png"
     return filename
@@ -85,7 +86,7 @@ def generate_unique_filename(base_image_name, x, y, cutout_index):
 def worker(args):
     (tasks_queue, base_images_bytes, cutout_shapes, lock, thread_index, batch_dir_lock) = args
     captchas_generated = 0
-    skipped_tasks = 0
+    skipped_tasks = 0 # another legacy debugger, left it in here for any weird exceptions
     log_entries = []
     start_time = time.time()
     batch_index = 1
@@ -208,7 +209,7 @@ def generate_captchas():
 
     print(f"Total cutout shapes found: {len(cutout_shape_filenames)}")
     if not cutout_shape_filenames:
-        print("No cutout shapes found. Exiting.")
+        print("No cutout shapes found. Ensure paths are set properly.")
         sys.exit(1)
 
     cutout_shapes = []
@@ -256,7 +257,7 @@ def generate_captchas():
             batch_dir_lock
         ))
 
-    print(f"Starting pool with {NUM_PROCESSES} processes.")
+    print(f"Starting {NUM_PROCESSES} threads.")
     with Pool(processes=NUM_PROCESSES) as pool:
         results = list(tqdm(pool.imap(worker, worker_args), total=len(worker_args), desc="Generating CAPTCHAs"))
 
