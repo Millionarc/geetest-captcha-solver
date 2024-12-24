@@ -15,7 +15,7 @@
  - Originally started with TensorFlow but switched to YOLOv11
  - Used YOLOv11n.pt with 7 epochs of training since it instantly plateaued, all args are [here](https://github.com/Millionarc/geetest-captcha-solver/blob/main/yolo/runs/detect/train/args.yaml)
 
-## Usage)
+## Usage
  ### Training (Optional as I Added the Weights [Here](https://github.com/Millionarc/geetest-captcha-solver/blob/main/yolo/runs/detect/train/weights/best.pt))
   - Generate captchas with [generatecaptchas.py](https://github.com/Millionarc/geetest-captcha-solver/blob/main/yolo/generatecaptchas.py) using images in the assets folder
   - Create the dataset using [this script](https://github.com/Millionarc/geetest-captcha-solver/blob/main/yolo/yolomakedataset.py)
