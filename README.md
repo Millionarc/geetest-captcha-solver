@@ -14,6 +14,7 @@
  ### AI/ML Solving
  - Originally started with TensorFlow but switched to YOLOv11
  - Used YOLOv11n.pt with 7 epochs of training since it instantly plateaued, all args are [here](https://github.com/Millionarc/geetest-captcha-solver/blob/main/yolo/runs/detect/train/args.yaml)
+ - Honestly, if you're looking for a ready-made solution instead of training your own model, an API like [CapSolver](https://dashboard.capsolver.com/passport/register?inviteCode=K4aa2y7rcpfX) can handle GeeTest pretty well
 
 ## Usage
  ### Training (Optional as I Added the Weights [Here](https://github.com/Millionarc/geetest-captcha-solver/blob/main/yolo/runs/detect/train/weights/best.pt))
