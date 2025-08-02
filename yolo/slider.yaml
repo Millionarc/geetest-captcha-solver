@@ -1,0 +1,10 @@
+# slider.yaml
+
+train: D:/dataset/train/images
+val: D:/dataset/val/images
+
+# Number of classes
+nc: 1
+
+# Class names
+names: ['slider']
